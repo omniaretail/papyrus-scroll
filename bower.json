@@ -1,0 +1,27 @@
+{
+    "name": "papyrus-scroll",
+    "description": "Infinite scroll for AngularJS, with screen-filling features.",
+    "main": [
+        "papyrus-scroll.js"
+    ],
+    "dependencies": {
+        "angular": "*"
+    },
+    "devDependencies": {},
+    "keywords": [
+        "infinite",
+        "scroll",
+        "papyrus"
+    ],
+    "authors": [
+        "Omnia Retail <omnia-tech@cp.nl>"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}
