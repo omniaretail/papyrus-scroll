@@ -11,23 +11,33 @@ Just another infinite scrolling module for AngularJS.
     ```
     bower install papyrus-scroll --save
     ```
-- Add dependency to your Angular Module: 
+- Add script tag to document:
     ```
-    angular.module("myApp", ["papyrus-scroll"]);
+    <script src="bower_components/papyrus-scroll/papyrus-scroll.js"></script>
+    ```
+- Add dependency to your module: 
+    ```
+    angular.module("yourAwesomeApp", ["papyrus-scroll"]);
     ```
 - Create a function to load items:
    ```
+   $scope.items = [];
    $scope.loadItems = function($amount) {
         for(var i = 0; i < $amount; i++) {
-            $scope.items.push({ /* can be anything */ });
+            $scope.items.push({  });
         }
    }
    ```
-- Assign required attributes to the container:
+- Assign required attributes to the container and the item:
     ```
     <div papyrus-scroll="loadItems($amount)">
         <div ng-repeat="item in items" papyrus-scroll-item>
             <img ng-src="//lorempixel.com/400/200/" />
         </div>
     </div>
+    ```
+- Optional tune settings:
+    ```
+    papyrus-scroll-throttle-ms="50"
+    papyrus-scroll-preload-view-percentage="75"
     ```

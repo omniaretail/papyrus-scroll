@@ -1,11 +1,13 @@
 (function () {
     "use strict";
 
-    function PapyrusScrollDirective($timeout) {
+    function PapyrusScrollDirective() {
         return {
             restrict: "A",
             scope: {
-                papyrusScroll: "&papyrusScroll"
+                papyrusScroll: "&papyrusScroll",
+                papyrusScrollThrottleMs: "=papyrusScrollThrottleMs",
+                papyrusScrollPreloadViewPercentage: "=papyrusScrollPreloadViewPercentage"
             },
             controller: PapyrusScrollDirectiveController,
             link: function (scope, element, attrs, ctrl) {
@@ -32,14 +34,22 @@
             });
         }
 
-        function render(container) {
-            var pending = getNrOfRequestItems(container);
+        var  renderBackoff = null;
 
-            if (pending > 0) {
-                $scope.$apply(function () {
-                    requestItems(pending);
-                });
+        function render(container) {
+            if (!!renderBackoff) {
+                $timeout.cancel(renderBackoff);
             }
+
+            renderBackoff = $timeout(function() {
+                var pending = getNrOfRequestItems(container);
+
+                if (pending > 0) {
+                    $scope.$apply(function () {
+                        requestItems(pending);
+                    });
+                }
+            }, getBackoffTimeout());
         }
 
         function requestItems(amount) {
@@ -65,7 +75,7 @@
             var renderedHeight = items.length * itemHeight;
             var backgroundRenderedHeight = (renderedHeight - containerScrollTop) - containerHeight;
 
-            var diff = backgroundRenderedHeight - (containerHeight / 3);
+            var diff = backgroundRenderedHeight - (containerHeight * getPreloadPercentage());
 
             if (diff <= 0) {
                 var nrOfItems = (Math.abs(diff) / itemHeight);
@@ -77,7 +87,17 @@
 
             return 0;
         }
+
+        function getBackoffTimeout() {
+            return $scope.papyrusScrollThrottleMs || 50;
+        }
+
+        function getPreloadPercentage() {
+             return ($scope.papyrusScrollPreloadViewPercentage || 75.0) / 100.0;           
+        }
     }
+
+    PapyrusScrollDirectiveController.$inject = ["$scope", "$timeout"];
 
     angular.module("papyrus-scroll", [])
         .directive("papyrusScroll", PapyrusScrollDirective);
