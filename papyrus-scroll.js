@@ -23,6 +23,8 @@
         function initContainer(container) {
             var $container = $(container);
 
+            requestItems(1);
+
             $(document).ready(function () {
                 render($container);
             });
@@ -30,8 +32,6 @@
             $container.on("scroll", function () {
                 render($container);
             });
-            
-            requestItems(1);
         }
 
         var  renderBackoff = null;
