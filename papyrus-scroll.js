@@ -20,14 +20,25 @@
         var vm = this;
         vm.initContainer = initContainer;
 
-        var $window = $(window);
+        var $window = $(window),
+            renderBackoff = null,
+            defaultPapyrusScrollThrottleMs = 50,
+            defaultPapyrusScrollPreloadViewPercentage = 75;
 
         function initContainer(container) {
             var $container = $(container);
 
-            requestItems(1);
+            var unwatch = $scope.$watch(function () {
+                return findItems($container).length;
+            }, function (oldValue, newValue) {
+                if (newValue > 1) {
+                    unwatch();
+                }
 
-            $(document).ready(function() {
+                render($container);
+            });
+
+            $(document).ready(function () {
                 render($container);
             });
 
@@ -42,24 +53,28 @@
             $container.on("scroll", function () {
                 render($container);
             });
-            
-            $scope.$on('$viewContentLoaded', function() {
+
+            $scope.$on("$viewContentLoaded", function () {
+                render($container);
+            });
+
+            $scope.$on("$papyrusScrollItemsLoaded", function () {
                 render($container);
             });
 
             angular.element(function () {
                 render($container);
             });
-        }
 
-        var  renderBackoff = null;
+            requestItems(1);
+        }
 
         function render(container) {
             if (!!renderBackoff) {
                 $timeout.cancel(renderBackoff);
             }
 
-            renderBackoff = $timeout(function() {
+            renderBackoff = $timeout(function () {
                 var pending = getNrOfRequestItems(container);
 
                 if (pending > 0) {
@@ -71,13 +86,19 @@
         }
 
         function requestItems(amount) {
-            if (!!$scope.papyrusScroll) {
-                $scope.papyrusScroll({ $amount: amount });
+            if (!$scope.papyrusScroll) {
+                return;
             }
+
+            $scope.papyrusScroll({ $amount: amount });
+        }
+
+        function findItems(container) {
+            return container.find("[papyrus-scroll-item]");
         }
 
         function getNrOfRequestItems(container) {
-            var items = container.find("[papyrus-scroll-item]");
+            var items = findItems(container);
 
             var containerHeight = container.height() || 0;
             var containerScrollTop = container.scrollTop() || $window.scrollTop() || 0;
@@ -96,7 +117,7 @@
             var diff = backgroundRenderedHeight - (containerHeight * getPreloadPercentage());
 
             if (diff <= 0) {
-                var nrOfItems = (Math.abs(diff) / itemHeight);
+                var nrOfItems = Math.ceil((Math.abs(diff) / itemHeight));
 
                 return (isNaN(nrOfItems) || !isFinite(nrOfItems))
                     ? 0
@@ -107,11 +128,11 @@
         }
 
         function getBackoffTimeout() {
-            return $scope.papyrusScrollThrottleMs || 50;
+            return $scope.papyrusScrollThrottleMs || defaultPapyrusScrollThrottleMs;
         }
 
         function getPreloadPercentage() {
-             return ($scope.papyrusScrollPreloadViewPercentage || 75.0) / 100.0;           
+            return ($scope.papyrusScrollPreloadViewPercentage || defaultPapyrusScrollPreloadViewPercentage) / 100.0;
         }
     }
 
