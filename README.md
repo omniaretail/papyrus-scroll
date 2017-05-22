@@ -1,5 +1,6 @@
 # Papyrus
 Just another infinite scrolling module for AngularJS. 
+[Live demo](https://codepen.io/wichardriezebos/pen/JNwjKR)
 
 # Features
 - Efficient item buffering.
@@ -11,8 +12,10 @@ Just another infinite scrolling module for AngularJS.
     ```
     bower install papyrus-scroll --save
     ```
-- Add script tag to document:
+- Add script tags to document:
     ```
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/papyrus-scroll/papyrus-scroll.js"></script>
     ```
 - Add dependency to your module: 

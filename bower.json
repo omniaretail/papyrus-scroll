@@ -5,6 +5,7 @@
         "papyrus-scroll.js"
     ],
     "dependencies": {
+        "jquery": "*",
         "angular": "*"
     },
     "devDependencies": {},
