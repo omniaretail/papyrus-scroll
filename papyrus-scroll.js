@@ -65,7 +65,7 @@
             angular.element(function () {
                 render($container);
             });
-
+			
             requestItems(1);
         }
 
@@ -103,6 +103,10 @@
             var containerHeight = container.height() || 0;
             var containerScrollTop = container.scrollTop() || $window.scrollTop() || 0;
 
+			if (containerHeight > $window.height()) {
+				containerHeight = $window.height();
+			}
+			
             var itemHeight = (!items.length)
                 ? 0
                 : ($(items[0]).height() || 0);
@@ -115,7 +119,7 @@
             var backgroundRenderedHeight = (renderedHeight - containerScrollTop) - containerHeight;
 
             var diff = backgroundRenderedHeight - (containerHeight * getPreloadPercentage());
-
+			
             if (diff <= 0) {
                 var nrOfItems = Math.ceil((Math.abs(diff) / itemHeight));
 
