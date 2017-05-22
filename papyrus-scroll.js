@@ -25,6 +25,10 @@
 
             requestItems(1);
 
+            $(document).ready(function() {
+                render($container);
+            });
+
             $(window).on("load", function () {
                 render($container);
             });
