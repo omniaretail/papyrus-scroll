@@ -25,11 +25,15 @@
 
             requestItems(1);
 
-            $(document).ready(function () {
+            $(window).on("load", function () {
                 render($container);
             });
 
             $container.on("scroll", function () {
+                render($container);
+            });
+            
+            $scope.$on('$viewContentLoaded', function() {
                 render($container);
             });
         }
