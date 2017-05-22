@@ -33,6 +33,10 @@
                 render($container);
             });
 
+            $(window).on("scroll", function () {
+                render($container);
+            });
+
             $container.on("scroll", function () {
                 render($container);
             });
