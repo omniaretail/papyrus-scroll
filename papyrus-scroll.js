@@ -40,6 +40,10 @@
             $scope.$on('$viewContentLoaded', function() {
                 render($container);
             });
+
+            angular.element(function () {
+                render($container);
+            });
         }
 
         var  renderBackoff = null;
