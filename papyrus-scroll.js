@@ -97,7 +97,7 @@
         }
     }
 
-    PapyrusScrollDirectiveController.$inject = ["$scope", "$timeout"];
+    PapyrusScrollDirectiveController.$inject = ["$scope", "$timeout", "$window"];
 
     angular.module("papyrus-scroll", [])
         .directive("papyrusScroll", PapyrusScrollDirective);
