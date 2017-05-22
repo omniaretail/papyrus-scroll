@@ -16,14 +16,14 @@
         };
     }
 
-    function PapyrusScrollDirectiveController($scope, $timeout, $window) {
+    function PapyrusScrollDirectiveController($scope, $timeout) {
         var vm = this;
         vm.initContainer = initContainer;
 
         function initContainer(container) {
             var $container = $(container);
 
-            angular.element($window).on("load", function () {
+            $(document).ready(function () {
                 render($container);
             });
 
@@ -97,7 +97,7 @@
         }
     }
 
-    PapyrusScrollDirectiveController.$inject = ["$scope", "$timeout", "$window"];
+    PapyrusScrollDirectiveController.$inject = ["$scope", "$timeout"];
 
     angular.module("papyrus-scroll", [])
         .directive("papyrusScroll", PapyrusScrollDirective);
