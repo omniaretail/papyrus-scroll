@@ -20,6 +20,8 @@
         var vm = this;
         vm.initContainer = initContainer;
 
+        var $window = $(window);
+
         function initContainer(container) {
             var $container = $(container);
 
@@ -29,11 +31,11 @@
                 render($container);
             });
 
-            $(window).on("load", function () {
+            $window.on("load", function () {
                 render($container);
             });
 
-            $(window).on("scroll", function () {
+            $window.on("scroll", function () {
                 render($container);
             });
 
@@ -78,7 +80,7 @@
             var items = container.find("[papyrus-scroll-item]");
 
             var containerHeight = container.height() || 0;
-            var containerScrollTop = container.scrollTop() || 0;
+            var containerScrollTop = container.scrollTop() || $window.scrollTop() || 0;
 
             var itemHeight = (!items.length)
                 ? 0
