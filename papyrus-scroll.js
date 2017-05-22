@@ -16,22 +16,22 @@
         };
     }
 
-    function PapyrusScrollDirectiveController($scope, $timeout) {
+    function PapyrusScrollDirectiveController($scope, $timeout, $window) {
         var vm = this;
         vm.initContainer = initContainer;
 
         function initContainer(container) {
             var $container = $(container);
 
-            requestItems(1);
-
-            $(window).on("load", function () {
+            angular.element($window).on("load", function () {
                 render($container);
             });
 
             $container.on("scroll", function () {
                 render($container);
             });
+            
+            requestItems(1);
         }
 
         var  renderBackoff = null;
